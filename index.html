@@ -59,6 +59,8 @@
         			var stars = starRating.children;
         			for (let i = 0; i < this.defaults.score; i++) {  //设置默认评分
         				stars[i].style.color = _This.defaults.selectColor[this.defaults.score-1];
+        				starTips.innerHTML = _This.defaults.tips[this.defaults.score-1];
+                        starTips.style.color = _This.defaults.selectColor[this.defaults.score-1];
         			};
         			for (var i = 0; i < stars.length; i++) {
         				stars[i].index = i;
@@ -72,6 +74,7 @@
 		        							stars[k].style.color = _This.defaults.selectColor[j];
 		        						};
 		        						starTips.innerHTML = _This.defaults.tips[j];
+		        						starTips.style.color = _This.defaults.selectColor[j];
 		        					} else {
 		        						stars[j].style.color = _This.defaults.defultColor;
 		        					};
@@ -122,7 +125,7 @@
 					alert(score);
 				},
 				isReScore: true,
-				score: 4
+				score: 3
 			});
 		};
 	</script>
