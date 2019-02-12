@@ -45,55 +45,62 @@
         			this.init();
         		},
         		init: function() {
-        			var _This = this;
-        			var starRating = document.getElementById(_This.element);
-        			var starTips = document.getElementById(_This.defaults.tipEle);
-        			var starEle = document.createElement("i");
-        			starEle.innerHTML = this.defaults.content;
-        			starEle.style.color = _This.defaults.defultColor;
-        			starEle.style.fontSize = _This.defaults.fontSize;
-        			for (var i = 0; i < 5; i++) {
-        				var starEles = starEle.cloneNode(true);
-        				starRating.appendChild(starEles);
-        			};
-        			var stars = starRating.children;
-        			for (let i = 0; i < this.defaults.score; i++) {  //设置默认评分
-        				stars[i].style.color = _This.defaults.selectColor[this.defaults.score-1];
-        				starTips.innerHTML = _This.defaults.tips[this.defaults.score-1];
-                        starTips.style.color = _This.defaults.selectColor[this.defaults.score-1];
-        			};
-        			for (var i = 0; i < stars.length; i++) {
-        				stars[i].index = i;
-	        			stars[i].addEventListener("mouseover", function(event) {
-	        				if (_This.defaults.isReScore) 
-	        					_This.isScoreFinish = false;
-		        			if (!_This.isScoreFinish) {
-		        				for (var j = 0; j < 5; j++) {
-		        					if (j<=event.target.index) {
-		        						for (var k = 0; k < j+1; k++) {
-		        							stars[k].style.color = _This.defaults.selectColor[j];
-		        						};
-		        						starTips.innerHTML = _This.defaults.tips[j];
-		        						starTips.style.color = _This.defaults.selectColor[j];
-		        					} else {
-		        						stars[j].style.color = _This.defaults.defultColor;
-		        					};
-		        					
+					var _This = this;
+					var starRating = document.getElementById(_This.element);
+					var starTips = document.getElementById(_This.defaults.tipEle);
+					var starEle;
+					if (!/<[-\s\w\.\/]+>|<[a-z\/]+>/i.test(_This.defaults.content)) {
+						starEle = document.createElement("i");
+						starEle.innerHTML = this.defaults.content;
+					} else {
+						var objE = document.createElement("div");
+						objE.innerHTML = this.defaults.content;
+						starEle = objE.childNodes[0];
+					};
+					starEle.style.color = _This.defaults.defultColor;
+					starEle.style.fontSize = _This.defaults.fontSize;
+					for (var i = 0; i < 5; i++) {
+						var starEles = starEle.cloneNode(true);
+						starRating.appendChild(starEles);
+					};
+					var stars = starRating.children;
+					for (let i = 0; i < this.defaults.score; i++) {  //设置默认评分
+						stars[i].style.color = _This.defaults.selectColor[this.defaults.score-1];
+		                starTips.innerHTML = _This.defaults.tips[this.defaults.score-1];
+		                starTips.style.color = _This.defaults.selectColor[this.defaults.score-1];
+					};
+					for (var i = 0; i < stars.length; i++) {
+						stars[i].index = i;
+		        			stars[i].addEventListener("mouseover", function(event) {
+		        				if (_This.defaults.isReScore) 
+		        					_This.isScoreFinish = false;
+			        			if (!_This.isScoreFinish) {
+			        				for (var j = 0; j < 5; j++) {
+			        					if (j<=event.target.index) {
+			        						for (var k = 0; k < j+1; k++) {
+			        							stars[k].style.color = _This.defaults.selectColor[j];
+			        						};
+			        						starTips.innerHTML = _This.defaults.tips[j];
+		                                    starTips.style.color = _This.defaults.selectColor[j];
+			        					} else {
+			        						stars[j].style.color = _This.defaults.defultColor;
+			        					};
+			        					
+			        				};
+			        			};
+		        			});
+						stars[i].addEventListener("click", function(event) {
+							if (_This.isScoreFinish) {
+								return false;
+							};
+		        				_This.defaults.score = event.target.index+1;
+		        				if (_This.defaults.callBack!==null) {
+		        					_This.defaults.callBack(_This.defaults.score);
 		        				};
-		        			};
-	        			});
-        				stars[i].addEventListener("click", function(event) {
-        					if (_This.isScoreFinish) {
-        						return false;
-        					};
-	        				_This.defaults.score = event.target.index+1;
-	        				if (_This.defaults.callBack!==null) {
-	        					_This.defaults.callBack(_This.defaults.score);
-	        				};
-	        				_This.isScoreFinish = true;
-	        			});
-        			};
-        			starRating.addEventListener("mouseleave", function() {
+		        				_This.isScoreFinish = true;
+		        			});
+					};
+					starRating.addEventListener("mouseleave", function() {
 		        		if (!_This.isScoreFinish) {
 		        			for (var i = 0; i < stars.length; i++) {
 		        				stars[i].style.color = _This.defaults.defultColor;
@@ -102,8 +109,8 @@
 		        		} else {
 		        			return false;
 		        		};
-        			});
-        		},
+					});
+				},
         	};
         	// 将插件对象暴露给全局对象
 		    _global = (function(){ return this || (0, eval)('this'); }());
